@@ -8,7 +8,7 @@ else
 fi
 
 # Declara variable
-sitios=("irsi.education" "testphp.vulnweb.com" "scanme.nmap.org")
+sitios=("irsi.education" "scanme.nmap.org")
 declare -A uuid_por_sitio
 
 # Función para validar comandos necesarios
@@ -44,7 +44,8 @@ analizar_con_wafw00f() {
         wafw00f $sitio
         read -p "Presione Enter para continuar..."
     done
-} 2>> STDERR.log | tee -a STDOUT.log
+}
+2>> STDERR.log | tee -a STDOUT.log
 
 # Función para analizar puertos abiertos con nmap
 analizar_con_nmap() {
@@ -53,7 +54,8 @@ analizar_con_nmap() {
         echo "Analizando puertos abiertos en $sitio con nmap..."
         nmap -Pn $sitio       
    done
-} 2>> STDERR.log | tee -a STDOUT.log
+}
+2>> STDERR.log | tee -a STDOUT.log
 
 # Función para enviar URL a URLScan.io
 enviar_a_urlscan() {
@@ -71,7 +73,8 @@ enviar_a_urlscan() {
             echo "Error al enviar $sitio a URLScan.io. Respuesta: $response"
         fi        
     done
-} 2>> STDERR.log | tee -a STDOUT.log
+}
+2>> STDERR.log | tee -a STDOUT.log
 
 # Función para obtener resultados de URLScan.io
 obtener_resultados_urlscan() {
@@ -95,7 +98,8 @@ obtener_resultados_urlscan() {
 	done
      done
   fi
-} 2>> STDERR.log | tee -a STDOUT.log
+}
+2>> STDERR.log | tee -a STDOUT.log
 
 # Función para leer el log de errores
 leer_log_errores() {
