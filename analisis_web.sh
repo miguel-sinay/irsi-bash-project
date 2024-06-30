@@ -8,7 +8,7 @@ else
 fi
 
 # Declara variable
-sitios=("irsi.education" "n")
+sitios=("irsi.education" "testphp.vulnweb.com" "scanme.nmap.org")
 declare -A uuid_por_sitio
 
 # Función para validar comandos necesarios
@@ -33,27 +33,27 @@ validar_comandos() {
 # Función para mostrar los sitios web
 mostrar_sitios() {
     for sitio in "${sitios[@]}"; do
-        echo "Sitio web: $sitio" 2>> STDERR.log | tee -a STDOUT.log
+        echo "Sitio web: $sitio"
     done
-} 
+}
 
 # Función para analizar con wafw00f
 analizar_con_wafw00f() {
     for sitio in "${sitios[@]}"; do
         echo "Analizando $sitio con wafw00f..."
-        wafw00f $sitio 2>> STDERR.log | tee -a STDOUT.log 
+        wafw00f $sitio
         read -p "Presione Enter para continuar..."
     done
-} 
+} 2>> STDERR.log | tee -a STDOUT.log
 
 # Función para analizar puertos abiertos con nmap
 analizar_con_nmap() {
     for sitio in "${sitios[@]}"; do
         read -p "Presione Enter para continuar..."
         echo "Analizando puertos abiertos en $sitio con nmap..."
-        nmap -Pn $sitio 2>> STDERR.log | tee -a STDOUT.log         
+        nmap -Pn $sitio       
    done
-} 
+} 2>> STDERR.log | tee -a STDOUT.log
 
 # Función para enviar URL a URLScan.io
 enviar_a_urlscan() {
@@ -62,7 +62,7 @@ enviar_a_urlscan() {
         response=$(curl -s --request POST --url 'https://urlscan.io/api/v1/scan/' \
         --header "Content-Type: application/json" \
         --header "API-Key: $API_KEY" \
-        --data "{\"url\": \"$sitio\", \"customagent\": \"US\"}" 2>> STDERR.log | tee -a STDOUT.log )
+        --data "{\"url\": \"$sitio\", \"customagent\": \"US\"}" )
         uuid=$(echo $response | jq -r '.uuid')
         if [ "$uuid" != "null" ]; then
            echo "UUID de URLScan.io para $sitio: $uuid"
@@ -71,7 +71,7 @@ enviar_a_urlscan() {
             echo "Error al enviar $sitio a URLScan.io. Respuesta: $response"
         fi        
     done
-} 
+} 2>> STDERR.log | tee -a STDOUT.log
 
 # Función para obtener resultados de URLScan.io
 obtener_resultados_urlscan() {
@@ -95,7 +95,7 @@ obtener_resultados_urlscan() {
 	done
      done
   fi
-} 
+} 2>> STDERR.log | tee -a STDOUT.log
 
 # Función para leer el log de errores
 leer_log_errores() {
